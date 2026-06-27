@@ -1,98 +1,1379 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mohan Restaurant - Dishes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mohan Professional Editor | Cinematic Portfolio</title>
+  <meta name="description" content="Mohan Professional Editor - cinematic video editor, VFX artist, graphic designer and creator of premium social media content.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r159/three.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.1/lottie.min.js" defer></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    :root {
+      --bg: #080808;
+      --panel: #121212;
+      --text: #f3f3f3;
+      --muted: #b0b0b0;
+      --gold: #ffd700;
+      --purple: #8a2be2;
+      --blue: #20bfff;
+      --glass: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.12);
+      --shadow: 0 30px 90px rgba(0,0,0,0.45);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      background: #111;
-      color: white;
-      min-height: 100vh;
-      padding: 30px 8%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, rgba(138,43,226,0.18), transparent 25%),
+                  linear-gradient(180deg, #0b0b0b 0, #080808 100%);
+      color: var(--text);
+      overflow-x: hidden;
     }
-    .page-title {
-      font-family: 'Cormorant Garamond', serif;
-      color: #ffb347;
-      margin-bottom: 10px;
-      letter-spacing: 0.04em;
-      font-size: clamp(2rem, 3.8vw, 2.8rem);
-      text-transform: uppercase;
-      text-shadow: 0 0 18px rgba(255,179,71,0.25);
-    }
-    .page-subtitle { color: #ddd; margin-bottom: 30px; font-size: 1rem; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-    }
-    .card {
-      background: rgba(34, 34, 34, 0.92);
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.28);
-      border: 1px solid rgba(255,255,255,0.07);
-      backdrop-filter: blur(8px);
-    }
-    .card img {
+
+    button, input, textarea, select { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .page-wrapper { position: relative; overflow: hidden; }
+    .nav-wrap {
+      position: fixed;
+      inset: 0 0 auto auto;
+      z-index: 100;
       width: 100%;
-      height: 180px;
+      top: 0;
+      backdrop-filter: blur(18px);
+      background: rgba(8,8,8,0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    nav {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 22px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+    .brand span { color: var(--gold); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .nav-links a { color: var(--muted); transition: color .2s ease; }
+    .nav-links a:hover { color: var(--text); }
+    .cta-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(255,255,255,0.16);
+      padding: 10px 16px;
+      border-radius: 999px;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+    .cta-nav:hover { transform: translateY(-2px); border-color: var(--gold); }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      padding: 140px 30px 80px;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 10%, rgba(138,43,226,0.35), transparent 12%),
+                  radial-gradient(circle at 80% 20%, rgba(32,191,255,0.18), transparent 15%);
+      pointer-events: none;
+    }
+    .hero-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 920px;
+      display: grid;
+      gap: 24px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      font-size: 0.9rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 30px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+    .hero-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(3.8rem, 5vw, 6rem);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      margin: 0;
+      text-transform: uppercase;
+      text-shadow: 0 0 40px rgba(138,43,226,0.22);
+    }
+    .hero-title strong {
+      color: var(--gold);
+      text-shadow: 0 0 60px rgba(255,215,0,0.32);
+    }
+    .hero-subtitle {
+      max-width: 700px;
+      font-size: 1.15rem;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .btn, .toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform .25s ease, border-color .25s ease, background .25s ease;
+      min-width: 170px;
+    }
+    .btn:hover, .toggle-btn:hover { transform: translateY(-2px); border-color: var(--gold); background: rgba(255,255,255,0.08); }
+    .btn.primary { background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(138,43,226,0.18)); border-color: rgba(255,215,0,0.22); box-shadow: 0 18px 40px rgba(255,215,0,0.08); }
+    .btn.secondary { border-color: rgba(32,191,255,0.18); }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      margin-top: 30px;
+    }
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 220px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+    .hero-card h4 {
+      margin: 0 0 14px;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+    .hero-card p { margin: 0; color: var(--muted); line-height: 1.8; }
+    .hero-floating {
+      position: absolute;
+      z-index: 1;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      inset: 0;
+    }
+    .hero-floating span {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(18px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      font-size: 0.8rem;
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+    }
+    .hero-floating span::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(138,43,226,0.25), rgba(32,191,255,0.14));
+      opacity: 0.6;
+      filter: blur(10px);
+    }
+    .hero-floating span strong { position: relative; z-index: 1; }
+
+    .section {
+      position: relative;
+      padding: 110px 30px;
+      z-index: 1;
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 60px;
+    }
+    .section-title small {
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+    .section-title h2 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 3rem);
+      letter-spacing: -0.04em;
+    }
+    .section-subtitle {
+      max-width: 720px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-top: 18px;
+    }
+    .glass-card {
+      border-radius: 28px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.35);
+      backdrop-filter: blur(18px);
+    }
+
+    .about-grid {
+      display: grid;
+      gap: 28px;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+    }
+    .about-image {
+      position: relative;
+      border-radius: 34px;
+      overflow: hidden;
+      min-height: 520px;
+      background: linear-gradient(180deg, rgba(138,43,226,0.2), rgba(8,8,8,0.92));
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .about-image img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+      opacity: 0.96;
+      transform: scale(1.02);
+    }
+    .about-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 30px;
+    }
+    .about-meta .meta-card {
+      padding: 24px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .meta-card h3 { margin: 0 0 12px; font-size: 1rem; color: var(--gold); }
+    .meta-card p { margin: 0; color: var(--muted); line-height: 1.8; }
+    .about-details {
+      display: grid;
+      gap: 16px;
+    }
+    .about-details p { max-width: 680px; color: var(--muted); line-height: 1.9; }
+    .counter-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 40px;
+    }
+    .counter {
+      padding: 28px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: grid;
+      gap: 10px;
+    }
+    .counter strong {
+      font-size: 2rem;
+      color: var(--text);
       display: block;
     }
-    .card-content { padding: 20px; }
-    .card h3 { margin-bottom: 10px; color: orange; }
-    .card .price { color: #fff; font-weight: 600; margin-top: 10px; }
-    .back-btn {
-      display: inline-block;
-      margin-bottom: 24px;
-      padding: 10px 20px;
-      background: linear-gradient(135deg, #ffb347, #ff7f50);
-      color: white;
-      text-decoration: none;
-      border-radius: 999px;
-      box-shadow: 0 10px 18px rgba(255,127,80,0.25);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    .counter span { color: var(--muted); letter-spacing: 0.02em; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
     }
-    .back-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 22px rgba(255,127,80,0.35);
+    .service-card {
+      position: relative;
+      padding: 26px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+      transition: transform .35s ease, box-shadow .35s ease;
+      cursor: pointer;
+    }
+    .service-card:hover { transform: translateY(-10px) rotateX(1deg); box-shadow: 0 30px 70px rgba(0,0,0,0.35); }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(138,43,226,0.15), rgba(32,191,255,0.10));
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+    .service-card:hover::before { opacity: 1; }
+    .service-card h3 { margin: 0 0 14px; font-size: 1.1rem; }
+    .service-card p { margin: 0; color: var(--muted); line-height: 1.85; }
+
+    .portfolio-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .filter-btn {
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted);
+      background: rgba(255,255,255,0.03);
+      padding: 12px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      color: var(--text);
+      border-color: var(--gold);
+      box-shadow: 0 16px 40px rgba(255,215,0,0.12);
+      background: rgba(255,215,0,0.08);
+    }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 22px;
+    }
+    .project-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 280px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+      transition: transform .3s ease;
+    }
+    .project-card:hover { transform: translateY(-8px); }
+    .project-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.05) brightness(0.94);
+      transition: transform .45s ease;
+    }
+    .project-card:hover img { transform: scale(1.05); }
+    .project-meta {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(180deg, transparent 0%, rgba(8,8,8,0.95) 90%);
+      color: white;
+    }
+    .project-meta small { color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; }
+    .project-meta h3 { margin: 10px 0 0; font-size: 1.1rem; }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      display: none;
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-content {
+      width: min(1100px, 100%);
+      max-height: 90vh;
+      border-radius: 28px;
+      overflow: hidden;
+      background: rgba(16,16,16,0.98);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.7);
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      border: none;
+      background: rgba(255,255,255,0.08);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+    .modal-video {
+      width: 100%;
+      height: min(72vh, 560px);
+      background: black;
+    }
+    .modal-video video { width: 100%; height: 100%; object-fit: cover; }
+
+    .testimonials-slider {
+      display: grid;
+      gap: 24px;
+    }
+    .testimonial-card {
+      position: relative;
+      padding: 28px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: grid;
+      gap: 18px;
+    }
+    .testimonial-top {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .testimonial-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(138,43,226,0.45), rgba(32,191,255,0.3));
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+    .testimonial-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .testimonial-info h3 { margin: 0; font-size: 1rem; }
+    .testimonial-info span { color: var(--muted); font-size: 0.9rem; }
+    .rating { color: #ffd700; letter-spacing: 0.06em; }
+    .testimonial-card p { color: var(--muted); line-height: 1.85; }
+    .testimonial-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: flex-end;
+    }
+    .testimonial-actions button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .pricing-card {
+      border-radius: 30px;
+      padding: 32px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: grid;
+      gap: 18px;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .pricing-card:hover { transform: translateY(-8px); box-shadow: 0 30px 80px rgba(0,0,0,0.3); }
+    .pricing-card h3 { margin: 0; font-size: 1.2rem; }
+    .pricing-card strong { font-size: 2.6rem; color: var(--gold); }
+    .pricing-card ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; color: var(--muted); }
+    .pricing-card li::before { content: '•'; margin-right: 8px; color: var(--blue); }
+    .pricing-card .btn { width: fit-content; }
+
+    .logo-marquee {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      padding: 24px 0;
+      display: flex;
+      align-items: center;
+    }
+    .marquee-inner {
+      display: flex;
+      gap: 40px;
+      padding-left: 100%;
+      animation: marquee 24s linear infinite;
+    }
+    .logo-item {
+      width: 120px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      opacity: 0.65;
+      filter: grayscale(0.45);
+    }
+    .logo-item img { width: 100%; filter: brightness(1.1); }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+
+    .timeline {
+      display: grid;
+      gap: 30px;
+      position: relative;
+      padding-left: 20px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(138,43,226,0.9), rgba(32,191,255,0.15));
+    }
+    .timeline-step {
+      position: relative;
+      padding: 18px 20px 18px 40px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+    .timeline-step::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 20px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 18px rgba(255,215,0,0.35);
+    }
+    .timeline-step h4 { margin: 0 0 8px; }
+    .timeline-step p { margin: 0; color: var(--muted); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .skill-ring {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08), transparent 55%);
+      display: grid;
+      place-items: center;
+    }
+    .skill-ring .ring {
+      position: absolute;
+      inset: 10px;
+      border-radius: 50%;
+      border: 5px solid rgba(255,255,255,0.08);
+      mask: radial-gradient(circle, transparent 70%, black 72%);
+    }
+    .skill-ring .skill-label {
+      position: relative;
+      text-align: center;
+      z-index: 1;
+      color: var(--text);
+    }
+    .skill-ring strong {
+      display: block;
+      font-size: 1.4rem;
+      color: var(--gold);
+    }
+    .skill-ring span { color: var(--muted); font-size: 0.95rem; }
+
+    .awards-grid, .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+    .award-card, .blog-card {
+      border-radius: 28px;
+      padding: 28px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .award-card h3, .blog-card h3 { margin: 0 0 12px; }
+    .award-card p, .blog-card p { color: var(--muted); line-height: 1.85; }
+    .blog-card small { color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; }
+
+    .faq-list {
+      display: grid;
+      gap: 18px;
+    }
+    .faq-item {
+      border-radius: 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      overflow: hidden;
+    }
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px;
+      cursor: pointer;
+    }
+    .faq-question h4 { margin: 0; font-size: 1rem; }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 24px;
+      transition: max-height .35s ease;
+    }
+    .faq-answer p { margin: 0 0 24px; color: var(--muted); line-height: 1.85; }
+    .faq-item.active .faq-answer { max-height: 220px; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 0.8fr;
+      gap: 28px;
+    }
+    .contact-panel {
+      display: grid;
+      gap: 20px;
+      padding: 32px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .contact-panel h3 { margin: 0; }
+    .contact-form {
+      display: grid;
+      gap: 16px;
+    }
+    .contact-form .field-group {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .contact-form label {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .contact-form input, .contact-form select, .contact-form textarea {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      outline: none;
+    }
+    .contact-form textarea { min-height: 160px; resize: vertical; }
+    .contact-form .full-width { grid-column: 1 / -1; }
+    .contact-form button { justify-self: start; }
+    .contact-info {
+      display: grid;
+      gap: 18px;
+    }
+    .contact-info .info-card {
+      padding: 22px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .contact-info .info-card h4 { margin: 0 0 10px; }
+    .contact-info .info-card p { margin: 0; color: var(--muted); line-height: 1.85; }
+
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+    .payment-card {
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.03);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .payment-card span {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .payment-card h4 { margin: 0; font-size: 1rem; }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .dashboard-card {
+      padding: 24px;
+      border-radius: 26px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--muted);
+    }
+    .dashboard-card h4 { margin: 0 0 12px; color: var(--text); }
+    .dashboard-card p { margin: 0; line-height: 1.85; }
+
+    .footer {
+      padding: 48px 30px 40px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(8,8,8,0.95);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .footer .footer-brand { display: flex; flex-direction: column; gap: 16px; }
+    .footer-links { display: grid; gap: 12px; }
+    .footer-links a { color: var(--muted); }
+    .footer-copy {
+      margin-top: 36px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .back-top {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.08);
+      display: grid;
+      place-items: center;
+      color: var(--text);
+      z-index: 110;
+      cursor: pointer;
+    }
+    .floating-chat {
+      position: fixed;
+      right: 24px;
+      bottom: 95px;
+      width: 62px;
+      height: 62px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(32,191,255,0.95), rgba(138,43,226,0.95));
+      box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+      display: grid;
+      place-items: center;
+      z-index: 110;
+      cursor: pointer;
+    }
+    .floating-chat span { color: white; font-size: 1.55rem; }
+
+    .chat-popup {
+      position: fixed;
+      right: 24px;
+      bottom: 180px;
+      width: min(360px, calc(100vw - 48px));
+      border-radius: 28px;
+      background: rgba(10,10,10,0.96);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+      overflow: hidden;
+      display: none;
+      z-index: 120;
+    }
+    .chat-popup.active { display: block; }
+    .chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      background: rgba(255,255,255,0.03);
+    }
+    .chat-header h4 { margin: 0; font-size: 1rem; }
+    .chat-body {
+      display: grid;
+      gap: 14px;
+      padding: 18px 22px 22px;
+    }
+    .chat-body p { margin: 0; color: var(--muted); line-height: 1.8; }
+    .chat-body a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    @media (max-width: 1080px) {
+      .about-grid, .pricing-grid, .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .skills-grid, .awards-grid, .blog-grid, .timeline, .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .contact-grid { grid-template-columns: 1fr; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 120px; }
+    }
+    @media (max-width: 760px) {
+      nav { flex-direction: column; align-items: flex-start; }
+      .nav-links { gap: 12px; }
+      .hero { padding: 100px 20px 60px; }
+      .section { padding: 70px 20px; }
+      .portfolio-grid, .services-grid, .pricing-grid, .about-grid, .skills-grid, .awards-grid, .blog-grid, .dashboard-grid { grid-template-columns: 1fr; }
+      .counter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .payment-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 3.6rem; }
+      .nav-links, .cta-nav { width: 100%; }
+      .hero-actions { flex-direction: column; }
+      .hero-card { min-height: 180px; }
+      .marquee-inner { animation-duration: 20s; }
     }
   </style>
 </head>
 <body>
-  <a class="back-btn" href="index.html">← Back to Home</a>
-  <h1 class="page-title">Mohan Restaurant</h1>
-  <p class="page-subtitle">Choose from fresh, healthy, and flavorful meals.</p>
+  <div class="page-wrapper" id="top">
+    <header class="nav-wrap">
+      <nav>
+        <div class="brand"><span>MPE</span> Mohan Professional Editor</div>
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#contact">Contact</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+        <a class="cta-nav" href="#contact">Book a Call</a>
+      </nav>
+    </header>
 
-  <div class="grid">
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80" alt="Grilled Chicken Bowl" />
-      <div class="card-content">
-        <h3>Grilled Chicken Bowl</h3>
-        <p>Fresh vegetables, rice, and juicy grilled chicken.</p>
-        <div class="price">₹1,299</div>
+    <section class="hero">
+      <canvas class="hero-canvas" id="bgCanvas"></canvas>
+      <div class="hero-content">
+        <span class="eyebrow">Premium Cinematic Editor</span>
+        <h1 class="hero-title">MOHAN <strong>PROFESSIONAL</strong> EDITOR</h1>
+        <p class="hero-subtitle">Transforming ideas into cinematic masterpieces with visionary editing, motion design, and branded social media storytelling.</p>
+        <div class="hero-actions">
+          <button class="btn primary">Hire Me</button>
+          <button class="btn secondary">Watch Showreel</button>
+          <button class="btn secondary">Contact Now</button>
+        </div>
+        <div class="hero-grid">
+          <div class="hero-card">
+            <h4>Signature Craft</h4>
+            <p>Luxury storytelling, cinematic color grading, and polished motion graphics for high-end brands and creators.</p>
+          </div>
+          <div class="hero-card">
+            <h4>Creative Technology</h4>
+            <p>Advanced VFX, immersive 3D atmospheres, drone edits and content optimized for YouTube, Reels and TikTok.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hero-floating">
+        <span style="top: 12%; left: 8%;">Camera Flow</span>
+        <span style="top: 22%; right: 12%; width: 110px; height: 110px;">Drone Edit</span>
+        <span style="bottom: 10%; left: 15%; width: 100px; height: 100px;">VFX Motion</span>
+        <span style="bottom: 18%; right: 12%; width: 104px; height: 104px;">Social Content</span>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="section-title">
+        <small>About the Editor</small>
+        <h2>Premium Editing with a Cinematic Vision</h2>
+      </div>
+      <p class="section-subtitle">Mohan blends cinematic direction, motion design, and content strategy to deliver polished videos that convert, inspire and elevate brand storytelling.</p>
+      <div class="about-grid">
+        <div class="about-image glass-card">
+          <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=1000&q=80" alt="Professional Editor Portrait">
+        </div>
+        <div class="about-details">
+          <p>With a focus on luxury aesthetics and high-impact storytelling, Mohan crafts cinematic films, social assets, and editorial visuals that feel premium and unforgettable.</p>
+          <div class="about-meta">
+            <div class="meta-card">
+              <h3>Experience</h3>
+              <p>Expertise in cinematic video editing, VFX compositing, color grading, motion graphics and social media production.</p>
+            </div>
+            <div class="meta-card">
+              <h3>Philosophy</h3>
+              <p>Less is more, every cut has purpose, and every frame supports emotion, clarity and brand value.</p>
+            </div>
+            <div class="meta-card">
+              <h3>Vision</h3>
+              <p>Deliver premium digital experiences with a luxurious visual tone, modern energy and cinematic storytelling.</p>
+            </div>
+            <div class="meta-card">
+              <h3>Growth</h3>
+              <p>Designed to convert audiences, increase engagement and elevate every campaign through polished post-production.</p>
+            </div>
+          </div>
+          <div class="counter-grid">
+            <div class="counter"><strong data-target="500">0</strong><span>Projects Completed</span></div>
+            <div class="counter"><strong data-target="250">0</strong><span>Happy Clients</span></div>
+            <div class="counter"><strong data-target="6">0</strong><span>Years Experience</span></div>
+            <div class="counter"><strong data-target="100">0</strong><span>Million+ Views Generated</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="section-title">
+        <small>Services</small>
+        <h2>Cinematic Services for Every Project</h2>
+      </div>
+      <div class="services-grid">
+        <article class="service-card"><h3>Video Editing</h3><p>Fast and polished edits for brand films, promo videos, and premium content.</p></article>
+        <article class="service-card"><h3>Wedding Films</h3><p>Elegant wedding stories with cinematic pace, music, and timeless emotion.</p></article>
+        <article class="service-card"><h3>YouTube Editing</h3><p>Growth-ready videos optimized for watch time and audience retention.</p></article>
+        <article class="service-card"><h3>Reels Editing</h3><p>High-energy short-form content with motion, punch and attention-grabbing cuts.</p></article>
+        <article class="service-card"><h3>Instagram Content</h3><p>Visual storytelling that feels luxury and scroll-stopping.</p></article>
+        <article class="service-card"><h3>TikTok Videos</h3><p>Trendy vertical edits and social-specific motion design.</p></article>
+        <article class="service-card"><h3>Motion Graphics</h3><p>Brand-led animated graphics, logo reveals and dynamic transitions.</p></article>
+        <article class="service-card"><h3>Color Grading</h3><p>Rich cinematic color looks, consistent tones, and visual polish.</p></article>
+        <article class="service-card"><h3>Cinematic Editing</h3><p>Story-driven edits for films, promos, trailers and luxury campaigns.</p></article>
+        <article class="service-card"><h3>Drone Editing</h3><p>Aerial footage editing with cinematic motion and polished pacing.</p></article>
+        <article class="service-card"><h3>Thumbnail Design</h3><p>Click-worthy visual assets for YouTube and social media.</p></article>
+        <article class="service-card"><h3>Logo Animation</h3><p>Premium reveals and animated identity treatments.</p></article>
+        <article class="service-card"><h3>Social Media Management</h3><p>Content planning, delivery and optimized posting support.</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="portfolio">
+      <div class="section-title">
+        <small>Portfolio</small>
+        <h2>Selected Work Across Categories</h2>
+      </div>
+      <div class="portfolio-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="cinematic">Cinematic</button>
+        <button class="filter-btn" data-filter="weddings">Weddings</button>
+        <button class="filter-btn" data-filter="corporate">Corporate</button>
+        <button class="filter-btn" data-filter="commercial">Commercial</button>
+        <button class="filter-btn" data-filter="youtube">YouTube</button>
+      </div>
+      <div class="portfolio-grid" id="portfolioGrid">
+        <div class="project-card" data-category="cinematic" data-video="https://www.w3schools.com/html/mov_bbb.mp4"><img src="https://images.unsplash.com/photo-1521091452668-7cb1f411ad0a?auto=format&fit=crop&w=900&q=80" alt="Cinematic project"><div class="project-meta"><small>Cinematic</small><h3>Urban Film Edit</h3></div></div>
+        <div class="project-card" data-category="weddings" data-video="https://www.w3schools.com/html/movie.mp4"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80" alt="Wedding project"><div class="project-meta"><small>Weddings</small><h3>Luxury Wedding Story</h3></div></div>
+        <div class="project-card" data-category="corporate" data-video="https://www.w3schools.com/html/mov_bbb.mp4"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80" alt="Corporate project"><div class="project-meta"><small>Corporate</small><h3>Brand Launch Reel</h3></div></div>
+        <div class="project-card" data-category="commercial" data-video="https://www.w3schools.com/html/movie.mp4"><img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=900&q=80" alt="Commercial project"><div class="project-meta"><small>Commercial</small><h3>Product Campaign</h3></div></div>
+        <div class="project-card" data-category="youtube" data-video="https://www.w3schools.com/html/mov_bbb.mp4"><img src="https://images.unsplash.com/photo-1517511620798-cec17d428bc0?auto=format&fit=crop&w=900&q=80" alt="YouTube project"><div class="project-meta"><small>YouTube</small><h3>Creator Series</h3></div></div>
+        <div class="project-card" data-category="reels" data-video="https://www.w3schools.com/html/movie.mp4"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80" alt="Reels project"><div class="project-meta"><small>Reels</small><h3>Social Highlights</h3></div></div>
+      </div>
+    </section>
+
+    <div class="modal-overlay" id="projectModal">
+      <div class="modal-content">
+        <button class="modal-close" id="modalClose">×</button>
+        <div class="modal-video"><video id="projectVideo" controls playsinline></video></div>
       </div>
     </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=800&q=80" alt="Veggie Pasta" />
-      <div class="card-content">
-        <h3>Veggie Pasta</h3>
-        <p>Healthy pasta with herbs, tomato sauce, and veggies.</p>
-        <div class="price">₹1,049</div>
+
+    <section class="section" id="testimonials">
+      <div class="section-title">
+        <small>Testimonials</small>
+        <h2>Clients Trust the Craft</h2>
       </div>
-    </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80" alt="Fresh Salad" />
-      <div class="card-content">
-        <h3>Fresh Salad</h3>
-        <p>Crunchy greens with avocado, nuts, and dressing.</p>
-        <div class="price">₹899</div>
+      <div class="testimonials-slider" id="testimonialSlider">
+        <div class="testimonial-card">
+          <div class="testimonial-top">
+            <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" alt="Client photo"></div>
+            <div class="testimonial-info"><h3>Isabella R.</h3><span>USA</span></div>
+          </div>
+          <div class="rating">★★★★★</div>
+          <p>“Mohan turned our brand story into an unforgettable film with premium motion and perfect timing. Results were beyond expectations.”</p>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-top">
+            <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1545186521-b5d6b5f9f5c2?auto=format&fit=crop&w=200&q=80" alt="Client photo"></div>
+            <div class="testimonial-info"><h3>Sophie L.</h3><span>UK</span></div>
+          </div>
+          <div class="rating">★★★★★</div>
+          <p>“The wedding film was cinematic, emotional and so beautifully edited. Our guests still talk about the visuals.”</p>
+        </div>
       </div>
+      <div class="testimonial-actions">
+        <button id="prevTestimonial">‹</button>
+        <button id="nextTestimonial">›</button>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="section-title">
+        <small>Pricing</small>
+        <h2>Luxury Packages for Every Need</h2>
+      </div>
+      <div class="pricing-grid">
+        <article class="pricing-card"><h3>Basic</h3><strong>₹999</strong><ul><li>Short social edits</li><li>Simple color grade</li><li>Fast turnaround</li></ul><button class="btn primary">Order Now</button></article>
+        <article class="pricing-card"><h3>Standard</h3><strong>₹2999</strong><ul><li>Brand reels</li><li>Motion graphics</li><li>Sound design</li></ul><button class="btn primary">Order Now</button></article>
+        <article class="pricing-card"><h3>Premium</h3><strong>₹5999</strong><ul><li>Cinematic film edit</li><li>Advanced VFX</li><li>Multi-platform deliverables</li></ul><button class="btn primary">Order Now</button></article>
+        <article class="pricing-card"><h3>Enterprise</h3><strong>Custom</strong><ul><li>Bespoke project support</li><li>Dedicated production</li><li>Consultation & launch</li></ul><button class="btn primary">Request Quote</button></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <small>Clients</small>
+        <h2>Trusted by Leading Brands</h2>
+      </div>
+      <div class="logo-marquee" aria-label="Client logos carousel">
+        <div class="marquee-inner" aria-hidden="true">
+          <div class="logo-item"><img src="https://dummyimage.com/120x48/ffffff/222222&text=Logo" alt="Client logo"></div>
+          <div class="logo-item"><img src="https://dummyimage.com/120x48/ffffff/222222&text=Brand" alt="Client logo"></div>
+          <div class="logo-item"><img src="https://dummyimage.com/120x48/ffffff/222222&text=Studio" alt="Client logo"></div>
+          <div class="logo-item"><img src="https://dummyimage.com/120x48/ffffff/222222&text=Media" alt="Client logo"></div>
+          <div class="logo-item"><img src="https://dummyimage.com/120x48/ffffff/222222&text=Agency" alt="Client logo"></div>
+          <div class="logo-item"><img src="https://dummyimage.com/120x48/ffffff/222222&text=Logo" alt="Client logo"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <small>Process</small>
+        <h2>Seamless Editing Workflow</h2>
+      </div>
+      <div class="timeline">
+        <article class="timeline-step"><h4>Contact</h4><p>Start with a conversation to understand your vision and goals.</p></article>
+        <article class="timeline-step"><h4>Discussion</h4><p>Clarify mood, structure, deliverables, timeline and brand tone.</p></article>
+        <article class="timeline-step"><h4>Editing</h4><p>Creative assembly, motion design, color grade and sound polish.</p></article>
+        <article class="timeline-step"><h4>Review</h4><p>Feedback rounds, refinements and approval for final delivery.</p></article>
+        <article class="timeline-step"><h4>Delivery</h4><p>Delivered in premium formats, ready for social, web and broadcast.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <small>Skills</small>
+        <h2>Tools and Creative Mastery</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-ring"><div class="ring"></div><div class="skill-label"><strong>92%</strong><span>Premiere Pro</span></div></div>
+        <div class="skill-ring"><div class="ring"></div><div class="skill-label"><strong>90%</strong><span>After Effects</span></div></div>
+        <div class="skill-ring"><div class="ring"></div><div class="skill-label"><strong>88%</strong><span>Photoshop</span></div></div>
+        <div class="skill-ring"><div class="ring"></div><div class="skill-label"><strong>84%</strong><span>DaVinci Resolve</span></div></div>
+        <div class="skill-ring"><div class="ring"></div><div class="skill-label"><strong>78%</strong><span>Blender</span></div></div>
+        <div class="skill-ring"><div class="ring"></div><div class="skill-label"><strong>86%</strong><span>CapCut</span></div></div>
+        <div class="skill-ring"><div class="ring"></div><div class="skill-label"><strong>85%</strong><span>Lightroom</span></div></div>
+        <div class="skill-ring"><div class="ring"></div><div class="skill-label"><strong>80%</strong><span>Illustrator</span></div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <small>Awards</small>
+        <h2>Achievements & Recognition</h2>
+      </div>
+      <div class="awards-grid">
+        <article class="award-card"><h3>Best Creative Edit</h3><p>Recognized for premium storytelling and brand-led editing excellence.</p></article>
+        <article class="award-card"><h3>Top Social Video</h3><p>Delivered campaign content that drove outstanding engagement and watch time.</p></article>
+        <article class="award-card"><h3>Luxury Motion Design</h3><p>Award-winning design for high-end brand motion and animated identity work.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <small>Blog</small>
+        <h2>Latest Editing Tips & Tutorials</h2>
+      </div>
+      <div class="blog-grid">
+        <article class="blog-card"><small>Tutorial</small><h3>Create Cinematic Transitions</h3><p>Step-by-step ideas for premium cuts and motion flow in your next edit.</p></article>
+        <article class="blog-card"><small>Guide</small><h3>Color Grading for Drama</h3><p>How to build cinematic color palettes that feel polished and emotional.</p></article>
+        <article class="blog-card"><small>Insight</small><h3>Social Content Strategy</h3><p>Best practices for publishing powerful visual stories across platforms.</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="section-title">
+        <small>FAQ</small>
+        <h2>Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item"><div class="faq-question"><h4>How long does editing take?</h4><span>+</span></div><div class="faq-answer"><p>Turnaround depends on scope, but most social edits are delivered within 3-5 days, and cinematic films within 10-14 days.</p></div></div>
+        <div class="faq-item"><div class="faq-question"><h4>Do you offer revisions?</h4><span>+</span></div><div class="faq-answer"><p>Yes. Every package includes review rounds so your project is finished exactly how you envision it.</p></div></div>
+        <div class="faq-item"><div class="faq-question"><h4>Can you handle international clients?</h4><span>+</span></div><div class="faq-answer"><p>Absolutely. Remote collaboration is smooth with secure file transfer, online calls and global payment support.</p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="section-title">
+        <small>Contact</small>
+        <h2>Book Your Project Consultation</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-panel glass-card">
+          <h3>Send a project brief</h3>
+          <p>Share the details of your video or content requirement and get a personalized production estimate.</p>
+          <div class="contact-info">
+            <div class="info-card"><h4>Email</h4><p>hello@mohaneditor.com</p></div>
+            <div class="info-card"><h4>Location</h4><p>Mumbai, India</p></div>
+            <div class="info-card"><h4>Phone</h4><p>+91 98765 43210</p></div>
+          </div>
+        </div>
+        <form class="contact-form glass-card">
+          <div class="field-group">
+            <label>Name<input type="text" placeholder="Your name"></label>
+            <label>Email<input type="email" placeholder="you@example.com"></label>
+          </div>
+          <div class="field-group">
+            <label>Phone<input type="tel" placeholder="+91 12345 67890"></label>
+            <label>Country<select><option>India</option><option>USA</option><option>UK</option><option>UAE</option></select></label>
+          </div>
+          <div class="field-group">
+            <label>Project Type<select><option>Brand Video</option><option>Wedding Film</option><option>Social Content</option><option>Trailer</option></select></label>
+            <label>Budget<input type="text" placeholder="₹... or USD..."></label>
+          </div>
+          <label class="full-width">Deadline<input type="date"></label>
+          <label class="full-width">Message<textarea placeholder="Tell me about your project"></textarea></label>
+          <label class="full-width">File Upload<input type="file"></label>
+          <button class="btn primary" type="submit">Submit Request</button>
+        </form>
+      </div>
+      <div class="payment-grid">
+        <div class="payment-card"><span>U</span><h4>UPI</h4></div>
+        <div class="payment-card"><span>P</span><h4>PhonePe</h4></div>
+        <div class="payment-card"><span>G</span><h4>Google Pay</h4></div>
+        <div class="payment-card"><span>P</span><h4>Paytm</h4></div>
+        <div class="payment-card"><span>R</span><h4>Razorpay</h4></div>
+        <div class="payment-card"><span>CC</span><h4>Credit Card</h4></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <small>Dashboard Mockups</small>
+        <h2>Client & Admin Workflow</h2>
+      </div>
+      <div class="dashboard-grid">
+        <div class="dashboard-card"><h4>Client Portal</h4><p>Secure login, project tracking, file uploads, invoice previews and live status updates.</p></div>
+        <div class="dashboard-card"><h4>Admin Dashboard</h4><p>Manage orders, clients, payments, messages, projects, analytics and notifications from one place.</p></div>
+        <div class="dashboard-card"><h4>Calendar Booking</h4><p>Schedule meetings, reserve time slots and integrate Google Meet for seamless collaboration.</p></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-grid">
+        <div class="footer-brand"><span class="eyebrow">MPE</span><p>Premium cinematic editing, motion design, and social content for ambitious brands and creators.</p></div>
+        <div class="footer-links"><a href="#about">About</a><a href="#services">Services</a><a href="#portfolio">Portfolio</a><a href="#contact">Contact</a></div>
+        <div class="footer-links"><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a></div>
+      </div>
+      <div class="footer-copy">© 2026 Mohan Professional Editor. Crafted with cinematic precision.</div>
+    </footer>
+
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+    <div class="floating-chat" id="chatToggle" aria-label="Open live chat"><span>💬</span></div>
+    <div class="chat-popup" id="chatPopup">
+      <div class="chat-header"><h4>Live Support</h4><button id="closeChat" aria-label="Close chat">×</button></div>
+      <div class="chat-body"><p>Hi! I’m here to help you plan your project. Message me for booking, pricing or creative direction.</p><a href="https://wa.me/919876543210" target="blank">WhatsApp Chat</a></div>
     </div>
   </div>
+
+  <script>
+    const canvas = document.getElementById('bgCanvas');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.position.set(0, 0, 26);
+
+    const ambient = new THREE.PointLight(0x8a2be2, 1.1, 90);
+    ambient.position.set(0, 10, 20);
+    scene.add(ambient);
+    const light2 = new THREE.PointLight(0x20bfff, 0.8, 90);
+    light2.position.set(-18, -8, 10);
+    scene.add(light2);
+
+    const particles = new THREE.Group();
+    const particleGeo = new THREE.SphereGeometry(0.12, 8, 8);
+    const particleMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 });
+    for (let i = 0; i < 120; i++) {
+      const particle = new THREE.Mesh(particleGeo, particleMat);
+      particle.position.set((Math.random() - 0.5) * 45, (Math.random() - 0.5) * 30, (Math.random() - 0.5) * 30);
+      particle.scale.setScalar(0.75 + Math.random() * 0.8);
+      particles.add(particle);
+    }
+    scene.add(particles);
+
+    const mesh = new THREE.Mesh(
+      new THREE.TorusKnotGeometry(8.5, 0.55, 160, 24),
+      new THREE.MeshStandardMaterial({ color: 0x220033, metalness: 0.75, roughness: 0.2, emissive: 0x220044, emissiveIntensity: 0.45 })
+    );
+    mesh.rotation.x = Math.PI * 0.28;
+    scene.add(mesh);
+
+    function animateScene() {
+      requestAnimationFrame(animateScene);
+      particles.rotation.y += 0.0016;
+      mesh.rotation.x += 0.002;
+      mesh.rotation.z += 0.0016;
+      renderer.render(scene, camera);
+    }
+    animateScene();
+
+    const hero = document.querySelector('.hero');
+    hero.addEventListener('mousemove', event => {
+      const x = (event.clientX / window.innerWidth - 0.5) * 2;
+      const y = (event.clientY / window.innerHeight - 0.5) * 2;
+      camera.position.x = x * 5;
+      camera.position.y = -y * 3;
+      camera.lookAt(0, 0, 0);
+    });
+
+    const counterElements = document.querySelectorAll('.counter strong');
+    const options = { threshold: 0.4 };
+    const counterObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          const target = +element.dataset.target;
+          gsap.to(element, { innerText: target, duration: 2.2, snap: { innerText: 1 }, ease: 'power1.out' });
+          obs.unobserve(element);
+        }
+      });
+    }, options);
+    counterElements.forEach(el => counterObserver.observe(el));
+
+    document.querySelectorAll('.filter-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        const filter = button.dataset.filter;
+        document.querySelectorAll('.project-card').forEach(card => {
+          const matches = filter === 'all' || card.dataset.category === filter;
+          card.style.display = matches ? 'block' : 'none';
+          gsap.fromTo(card, { opacity: 0, y: 20 }, { opacity: matches ? 1 : 0, y: matches ? 0 : 20, duration: 0.45, ease: 'power3.out' });
+        });
+      });
+    });
+
+    const portfolioCards = document.querySelectorAll('.project-card');
+    const modal = document.getElementById('projectModal');
+    const modalVideo = document.getElementById('projectVideo');
+    const closeModal = document.getElementById('modalClose');
+    portfolioCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const src = card.dataset.video;
+        modalVideo.src = src;
+        modalVideo.play();
+        modal.classList.add('active');
+      });
+    });
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('active');
+      modalVideo.pause();
+      modalVideo.currentTime = 0;
+    });
+    modal.addEventListener('click', event => { if (event.target === modal) closeModal.click(); });
+
+    let testimonialIndex = 0;
+    const testimonials = document.querySelectorAll('.testimonial-card');
+    const updateTestimonials = index => {
+      testimonials.forEach((card, idx) => {
+        card.style.display = idx === index ? 'grid' : 'none';
+      });
+    };
+    updateTestimonials(testimonialIndex);
+    document.getElementById('prevTestimonial').addEventListener('click', () => {
+      testimonialIndex = (testimonialIndex - 1 + testimonials.length) % testimonials.length;
+      updateTestimonials(testimonialIndex);
+    });
+    document.getElementById('nextTestimonial').addEventListener('click', () => {
+      testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+      updateTestimonials(testimonialIndex);
+    });
+
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const item = question.parentElement;
+        item.classList.toggle('active');
+        const answer = item.querySelector('.faq-answer');
+        if (item.classList.contains('active')) {
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        } else {
+          answer.style.maxHeight = null;
+        }
+      });
+    });
+
+    const chatToggle = document.getElementById('chatToggle');
+    const chatPopup = document.getElementById('chatPopup');
+    const closeChat = document.getElementById('closeChat');
+    chatToggle.addEventListener('click', () => chatPopup.classList.toggle('active'));
+    closeChat.addEventListener('click', () => chatPopup.classList.remove('active'));
+
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray('.section-title, .service-card, .project-card, .testimonial-card, .pricing-card, .timeline-step, .skill-ring, .award-card, .blog-card, .contact-panel, .contact-form, .dashboard-card').forEach((card) => {
+      gsap.from(card, {
+        opacity: 0,
+        y: 30,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: card, start: 'top 85%' }
+      });
+    });
+
+    const heroTitle = document.querySelector('.hero-title');
+    const typeText = 'Transforming Ideas into Cinematic Masterpieces.';
+    let typeIndex = 0;
+    function typeWriter() {
+      if (typeIndex < typeText.length) {
+        heroTitle.textContent = `MOHAN PROFESSIONAL EDITOR\n${typeText.slice(0, typeIndex + 1)}`;
+        typeIndex++;
+        setTimeout(typeWriter, 50);
+      }
+    }
+    setTimeout(typeWriter, 1000);
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+  </script>
 </body>
 </html>
